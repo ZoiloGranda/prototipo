@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+
+<head>
+  <title>CAOL - Controle de Atividades Online - Agence Interativa</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-filter/0.5.16/angular-filter.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/randomcolor/0.5.2/randomColor.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
+  <script src="./public/js/mainApp.js"></script>
+  <script src="./public/js/app.js"></script>
+  <script src="./public/js/chartjs-plugin-annotation.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.2/css/bulma.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body ng-controller="mainController" ng-cloak>
+  <form id="form1" name="form1" method="post">
+    <div class="field is-horizontal">
+      <div class="field-label is-normal">
+        <label class="label">Periodo a consultar</label>
+      </div>
+      <div class="field-body">
+        <div class="field is-grouped">
+          <div class="field">
+            <label class="label">Mes inicial</label>
+            <p class="control">
+              <span class="select">
+       <select ng-model="mesinicio" id="mesinicio" name="mesinicio" ng-options="mes.name for mes in meses track by mes.id" required>
+            </select>
+    </span>
+            </p>
+          </div>
+          <div class="field">
+            <label class="label">Año inicial</label>
+            <p class="control">
+              <span class="select">
+       <select ng-model="anoinicio" id="anoinicio" ng-options="ano.name for ano in anos track by ano.id">
+            </select>
+    </span>
+            </p>
+          </div>
+        </div>
+        <div class="field is-grouped">
+          <div class="field">
+            <label class="label">Mes final</label>
+            <p class="control">
+              <span class="select">
+       <select ng-model="mesfin" id="mesfin" ng-options="mes.name for mes in meses track by mes.id">
+            </select>
+    </span>
+            </p>
+          </div>
+          <div class="field">
+            <label class="label">Año final</label>
+            <p class="control">
+              <span class="select">
+       <select ng-model="anofin" id="anofin" ng-options="ano.name for ano in anos track by ano.id">
+            </select>
+    </span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="field is-horizontal">
+      <div class="field-label is-normal">
+        <label class="label">Consultores</label>
+      </div>
+      <div class="field-body">
+        <div class="field">
+          <p class="control">
+            <label class="checkbox" ng-repeat="usuario in usuarios"> {{usuario.no_usuario}}
+              <input type="checkbox" ng-value="usuario.no_usuario" name="usuario.no_usuario" ng-model="consultores" ng-click="cambiar(usuario.co_usuario)">
+              <br>
+            </label>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="field is-horizontal">
+      <div class="field-label">
+      </div>
+      <div class="field-body">
+        <div class="field">
+          <div class="control">
+            <button class="button is-primary" value="Relatório" name="relatorio" ng-click="relatorio()">
+              Relatorio
+            </button>
+            <button class="button is-primary" value="Gráfico" name="grafico" ng-click="grafico()">
+              Grafico
+            </button>
+            <button class="button is-primary" value="Pizza" name="pizza" ng-click="piechart()">
+              Pizza
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <table class="table" ng-repeat="thisConsultor in dataConsultores">
+      <tr>
+        <td ng-repeat="consultorAct in thisConsultor| unique: 'no_usuario'" class="subtitle">{{consultorAct.no_usuario}}</td>
+      </tr>
+      <tr>
+        <th>Periodo</th>
+        <th>Receta Liquida</th>
+        <th>Custo Fixo</th>
+        <th>Comissao</th>
+        <th>Lucro</th>
+      </tr>
+      <tr ng-repeat="(key,value) in thisConsultor.groupbymes">
+        <td>
+          <div ng-switch="key">
+            <div ng-switch-when=1>Enero</div>
+            <div ng-switch-when=2>Febrero</div>
+            <div ng-switch-when=3>Marzo</div>
+            <div ng-switch-when=4>Abril</div>
+            <div ng-switch-when=5>Mayo</div>
+            <div ng-switch-when=6>Junio</div>
+            <div ng-switch-when=7>Julio</div>
+            <div ng-switch-when=8>Agosto</div>
+            <div ng-switch-when=9>Septiembre</div>
+            <div ng-switch-when=10>Octubre</div>
+            <div ng-switch-when=11>Noviembre</div>
+            <div ng-switch-when=12>Diciembre</div>
+            <div ng-switch-default>default</div>
+          </div>
+        </td>
+        <td>{{value.receitadelmes.toFixed(2)}}</td>
+        <td>{{thisConsultor.brut_salario.toFixed(2)}}</td>
+        <td>{{value.comisiondelmes.toFixed(2)}}</td>
+        <td>{{value.lucrodelmes.toFixed(2)}}</td>
+      </tr>
+    </table>
+  </form>
+
+  <div style="position: relative; height:40vh; width:80vw;margin-left: 5rem;  margin-bottom: 25rem" id="chart-container" class="chart-container">
+    <canvas id="myChart2" width="1000px" height="500px"></canvas>
+    </div>
+      <div style="position: relative; height:40vh; width:80vw;margin-left: 5rem; margin-top: 25rem" id="piechart-container" class="chart-container">
+    <canvas id="myChart3" width="1000px" height="500px"></canvas>
+    </div>
+
+</body>
+</html>
