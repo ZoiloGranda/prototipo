@@ -75,40 +75,26 @@ app.get('/queryConsultores', function(req, res) {
 });
 
 
-
-
-
-
-
-
-
 app.post('/relatorio', function(req, res) {
   var a = [];
   var consultores = req.body.consultores;
-  connection.getConnection(function(error, tempCon) {
-    if (error) {
-      tempCon.release();
-      console.log(error);
-    } else {
-      tempCon.query(dbQuery.relatorioQuery, [
+   connection.query(dbQuery.relatorioQuery, [
         consultores,
         Number(req.body.anoinicio.name),
         req.body.mesinicio.id,
         Number(req.body.anofin.name),
         req.body.mesfin.id
       ], function(error, rows, fields) {
-        if (error) {
-          tempCon.release();
-          console.log(error);
-        } else {
+    if (error) {
+      console.log(error);
+    } else {
           a = _.groupBy(rows, function(n) {
             return n.no_usuario;
           });
         }
       })
-      tempCon.query(dbQuery.brutSalarioQuery, [consultores], function(error, rows, fields) {
+      connection.query(dbQuery.brutSalarioQuery, [consultores], function(error, rows, fields) {
         if (error) {
-          tempCon.release();
           console.log(error);
         } else {
           brut_salarios = rows;
@@ -116,8 +102,6 @@ app.post('/relatorio', function(req, res) {
         }
       })
     }
-  })
-})
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
