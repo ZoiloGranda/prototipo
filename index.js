@@ -8,13 +8,17 @@ var app = express();
 app.set('port', (process.env.PORT || 4000));
 
 
-var connection = mysql.createConnection(process.env.JAWSDB_URL)||mysql.createPool({
-                                                                  connectionLimit: 20,
-                                                                  host: 'localhost',
-                                                                  user: 'root',
-                                                                  password: '192511244',
-                                                                  database: 'testagence'
-                                                                });
+var connection = mysql.createConnection(process.env.JAWSDB_URL)
+
+
+
+mysql.createPool({
+  connectionLimit: 20,
+  host: 'jj820qt5lpu6krut.cbetxkdyhwsb.us-east-1.rds.amazonaws.com  ',
+  user: 'i624it7e1ihlgfnm',
+  password: 'ek27xt6lcutur5wz',
+  database: 'ed0gqsrtrt0z0v5q'
+});
 
 app.use('/public', express.static('public'))
 app.use(favicon(__dirname + '/public/img/favicon.ico'));
@@ -25,14 +29,14 @@ app.set('views', __dirname + '/views');
 app.engine('html', require('ejs').renderFile);
 
 var dbQuery = {
-    getAllQuery: `SELECT cao_usuario.no_usuario,cao_usuario.co_usuario
+  getAllQuery: `SELECT cao_usuario.no_usuario,cao_usuario.co_usuario
               FROM cao_usuario
               JOIN permissao_sistema
               ON cao_usuario.co_usuario=permissao_sistema.co_usuario
               WHERE permissao_sistema.co_sistema = 1
               AND permissao_sistema.in_ativo = 'S'
               AND permissao_sistema.co_tipo_usuario IN (0,1,2)`,
-    relatorioQuery: `SELECT
+  relatorioQuery: `SELECT
                   (cao_fatura.valor - (cao_fatura.valor*(cao_fatura.total_imp_inc/100))) AS receita,
                   ((cao_fatura.valor - (cao_fatura.valor*(cao_fatura.total_imp_inc/100))) * (cao_fatura.comissao_cn/100)) AS comision,
                   cao_os.co_os, cao_fatura.total_imp_inc,
@@ -48,10 +52,10 @@ var dbQuery = {
                   cao_usuario.no_usuario, cao_os.co_os, cao_fatura.valor,cao_fatura.total_imp_inc,cao_fatura.comissao_cn,
                   cao_fatura.data_emissao
                   ORDER BY cao_fatura.data_emissao`,
-    brutSalarioQuery: `SELECT cao_salario.brut_salario,cao_salario.co_usuario
+  brutSalarioQuery: `SELECT cao_salario.brut_salario,cao_salario.co_usuario
                       FROM cao_salario
                       WHERE cao_salario.co_usuario IN (?)`
-  }
+}
 
 app.get('/', function(req, res) {
   res.render('index.html');
