@@ -7,7 +7,6 @@ var _ = require('lodash');
 var app = express();
 app.set('port', (process.env.PORT || 4000));
 
-
 var connection = mysql.createPool({
   connectionLimit: 20,
   host: 'localhost',
