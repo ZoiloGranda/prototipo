@@ -100,8 +100,8 @@ app.post('/relatorio', function(req, res) {
           brut_salarios = rows;
           res.send({ a, brut_salarios });
         }
-      })
-    }
+      });
+    });
 
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
