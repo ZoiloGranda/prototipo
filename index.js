@@ -63,7 +63,7 @@ app.get('/', function(req, res) {
   res.render('index.html');
 })
 app.get('/queryConsultores', function(req, res) {
-  connection.query(dbQuery.getAllQuery, function(error, results, fields) {
+  connection.query(dbQuery.getAllQuery, function(error, rows, fields) {
     if (error) {
       console.log(error);
     } else {
