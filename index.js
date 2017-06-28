@@ -16,14 +16,6 @@ var connection = mysql.createConnection(process.env.JAWSDB_URL)||mysql.createPoo
                                                                   database: 'testagence'
                                                                 });
 
-
-var connection = mysql.createPool({
-  connectionLimit: 20,
-  host: 'localhost',
-  user: 'root',
-  password: '192511244',
-  database: 'testagence'
-});
 app.use('/public', express.static('public'))
 app.use(favicon(__dirname + '/public/img/favicon.ico'));
 
