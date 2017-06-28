@@ -14,7 +14,7 @@ var connection = mysql.createConnection(process.env.JAWSDB_URL)
 
 mysql.createPool({
   connectionLimit: 20,
-  host: 'jj820qt5lpu6krut.cbetxkdyhwsb.us-east-1.rds.amazonaws.com  ',
+  host: 'jj820qt5lpu6krut.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
   user: 'i624it7e1ihlgfnm',
   password: 'ek27xt6lcutur5wz',
   database: 'ed0gqsrtrt0z0v5q'
