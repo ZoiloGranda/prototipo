@@ -7,6 +7,16 @@ var _ = require('lodash');
 var app = express();
 app.set('port', (process.env.PORT || 4000));
 
+
+var connection = mysql.createConnection(process.env.JAWSDB_URL)||mysql.createPool({
+                                                                  connectionLimit: 20,
+                                                                  host: 'localhost',
+                                                                  user: 'root',
+                                                                  password: '192511244',
+                                                                  database: 'testagence'
+                                                                });
+
+
 var connection = mysql.createPool({
   connectionLimit: 20,
   host: 'localhost',
