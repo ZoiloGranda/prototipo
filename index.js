@@ -8,18 +8,20 @@ var app = express();
 app.set('port', (process.env.PORT || 4000));
 
 
-var connection = mysql.createConnection(process.env.JAWSDB_URL)
-
-
-
-mysql.createPool({
+var connection = mysql.createConnection({
   connectionLimit: 20,
   host: 'jj820qt5lpu6krut.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
   user: 'i624it7e1ihlgfnm',
   password: 'ek27xt6lcutur5wz',
   database: 'ed0gqsrtrt0z0v5q'
 });
-
+connection.connect(function(err) {
+  if (err) {
+    console.error('error connecting: ' + err.stack);
+    return;
+  }
+  console.log('connected as id ' + connection.threadId);
+});
 app.use('/public', express.static('public'))
 app.use(favicon(__dirname + '/public/img/favicon.ico'));
 
@@ -61,24 +63,24 @@ app.get('/', function(req, res) {
   res.render('index.html');
 })
 app.get('/queryConsultores', function(req, res) {
-  connection.getConnection(function(error, tempCon) {
+  connection.query(dbQuery.getAllQuery, function(error, results, fields) {
     if (error) {
-      tempCon.release();
       console.log(error);
     } else {
-      tempCon.query(dbQuery.getAllQuery, function(error, rows, fields) {
-        tempCon.release();
-        if (error) {
-          console.log(error);
-        } else {
-          var usuarios = rows;
-          console.log(rows);
-          res.send({ usuarios: rows });
-        }
-      })
+      var usuarios = rows;
+      console.log(rows);
+      res.send({ usuarios: rows });
     }
-  })
-})
+  });
+});
+
+
+
+
+
+
+
+
 
 app.post('/relatorio', function(req, res) {
   var a = [];
