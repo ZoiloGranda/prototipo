@@ -113,6 +113,8 @@ angular.module('myApp').controller('mainController', ['$scope', '$http', '$ancho
             $scope.toast('Error al conectarse con el servidor, intentelo mas tarde');
           });
           $scope.innerRoutes('relatorio');
+          document.getElementById('btngrafico').removeAttribute('disabled');
+
         } else {
           $scope.toast('Selecciona al menos un consultor');
         }
@@ -214,6 +216,8 @@ angular.module('myApp').controller('mainController', ['$scope', '$http', '$ancho
       //ya que solo estoy usando un controlador y un mismo archivo
       $scope.recetasPieChart = recetas;
       $scope.innerRoutes('myChart2');
+      document.getElementById('btnpizza').removeAttribute('disabled');
+
     };
 
     //grafico de torta/pizza
