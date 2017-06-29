@@ -108,13 +108,12 @@ angular.module('myApp').controller('mainController', ['$scope', '$http', '$ancho
                       $scope.dataConsultores[nombre].groupbymes[newprop].comisiondelmes);
                 });
               });
+              document.getElementById('btngrafico').removeAttribute('disabled');
             }
           }, function errorCallback(error) {
             $scope.toast('Error al conectarse con el servidor, intentelo mas tarde');
           });
           $scope.innerRoutes('relatorio');
-          document.getElementById('btngrafico').removeAttribute('disabled');
-
         } else {
           $scope.toast('Selecciona al menos un consultor');
         }
