@@ -7,7 +7,6 @@ var _ = require('lodash');
 var app = express();
 app.set('port', (process.env.PORT || 4000));
 
-
 var connection = mysql.createConnection({
   connectionLimit: 20,
   host: 'jj820qt5lpu6krut.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
@@ -74,16 +73,15 @@ app.get('/queryConsultores', function(req, res) {
   });
 });
 
-
 app.post('/relatorio', function(req, res) {
   var a = [];
   var consultores = req.body.consultores;
    connection.query(dbQuery.relatorioQuery, [
         consultores,
-        Number(req.body.anoinicio.name),
-        req.body.mesinicio.id,
-        Number(req.body.anofin.name),
-        req.body.mesfin.id
+        req.body.anoinicio,
+        req.body.mesinicio,
+        req.body.anofin,
+        req.body.mesfin
       ], function(error, rows, fields) {
     if (error) {
       console.log(error);
